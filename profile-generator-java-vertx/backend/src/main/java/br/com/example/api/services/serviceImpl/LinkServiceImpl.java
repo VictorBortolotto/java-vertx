@@ -41,6 +41,8 @@ public class LinkServiceImpl implements LinkService {
           links.add(link);
         } 
         promise.complete(links);
+      } else if (handle.succeeded() && result.size() == 0) {
+        promise.complete(List.of(new Link()));
       } else {
         promise.fail("Fail to find link");
       }

@@ -46,24 +46,24 @@ public class ProfileServiceImpl implements ProfileService {
         .compose(v -> fetchSkills(profileId, profile))
         .compose(v -> fetchLanguages(profileId, profile))
         .onComplete(result -> {
-            if (result.succeeded()) {
-                JsonObject response = buildResponse(profile);
-                new Response(context).send(200, response);
-            } else {
-                new Response(context).send(500, new JsonObject().put("error", "Failed to fetch profile data"));
-            }
+          if (result.succeeded()) {
+            JsonObject response = buildResponse(profile);
+            new Response(context).send(200, response);
+          } else {
+            new Response(context).send(500, new JsonObject().put("error", "Failed to fetch profile data"));
+          }
         });
 }
 
 private Future<Void> fetchCandidate(long candidateId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     candidateServiceImpl.findById(candidateId).onComplete(candidate -> {
-        if (candidate.succeeded()) {
-            profile.setCandidate(candidate.result());
-            promise.complete();
-        } else {
-            promise.fail(candidate.cause());
-        }
+      if (candidate.succeeded()) {
+        profile.setCandidate(candidate.result());
+        promise.complete();
+      } else {
+        promise.fail(candidate.cause());
+      }
     });
     return promise.future();
 }
@@ -71,12 +71,12 @@ private Future<Void> fetchCandidate(long candidateId, Profile profile) {
 private Future<Void> fetchExperiences(long profileId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     experienceServiceImpl.findAllByProfileId(profileId).onComplete(experiences -> {
-        if (experiences.succeeded()) {
-            profile.setExperiences(experiences.result());
-            promise.complete();
-        } else {
-            promise.fail(experiences.cause());
-        }
+      if (experiences.succeeded()) {
+        profile.setExperiences(experiences.result());
+        promise.complete();
+      } else {
+        promise.fail(experiences.cause());
+      }
     });
     return promise.future();
 }
@@ -84,12 +84,12 @@ private Future<Void> fetchExperiences(long profileId, Profile profile) {
 private Future<Void> fetchGraduations(long profileId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     graduationServiceImpl.findByProfileId(profileId).onComplete(graduations -> {
-        if (graduations.succeeded()) {
-            profile.setGraduations(graduations.result());
-            promise.complete();
-        } else {
-            promise.fail(graduations.cause());
-        }
+      if (graduations.succeeded()) {
+        profile.setGraduations(graduations.result());
+        promise.complete();
+      } else {
+        promise.fail(graduations.cause());
+      }
     });
     return promise.future();
 }
@@ -97,12 +97,12 @@ private Future<Void> fetchGraduations(long profileId, Profile profile) {
 private Future<Void> fetchLinks(long profileId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     linkServiceImpl.findAllByProfileId(profileId).onComplete(links -> {
-        if (links.succeeded()) {
-            profile.setLinks(links.result());
-            promise.complete();
-        } else {
-            promise.fail(links.cause());
-        }
+      if (links.succeeded()) {
+        profile.setLinks(links.result());
+        promise.complete();
+      } else {
+        promise.fail(links.cause());
+      }
     });
     return promise.future();
 }
@@ -110,12 +110,12 @@ private Future<Void> fetchLinks(long profileId, Profile profile) {
 private Future<Void> fetchSkills(long profileId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     skillServiceImpl.findAllByProfileId(profileId).onComplete(skills -> {
-        if (skills.succeeded()) {
-            profile.setSkills(skills.result());
-            promise.complete();
-        } else {
-            promise.fail(skills.cause());
-        }
+      if (skills.succeeded()) {
+        profile.setSkills(skills.result());
+        promise.complete();
+      } else {
+        promise.fail(skills.cause());
+      }
     });
     return promise.future();
 }
@@ -123,24 +123,24 @@ private Future<Void> fetchSkills(long profileId, Profile profile) {
 private Future<Void> fetchLanguages(long profileId, Profile profile) {
     Promise<Void> promise = Promise.promise();
     lenguageServiceImpl.findAllByProfileId(profileId).onComplete(languages -> {
-        if (languages.succeeded()) {
-            profile.setLenguages(languages.result());
-            promise.complete();
-        } else {
-            promise.fail(languages.cause());
-        }
+      if (languages.succeeded()) {
+        profile.setLenguages(languages.result());
+        promise.complete();
+      } else {
+        promise.fail(languages.cause());
+      }
     });
     return promise.future();
 }
 
 private JsonObject buildResponse(Profile profile) {
-    JsonObject response = new JsonObject();
-    response.put("candidate", Candidate.parseCandidateToJsonObject(profile.getCandidate()));
-    response.put("experiences", Experience.parseExperiencesToJsonArray(profile.getExperiences()));
-    response.put("graduations", Graduation.parseGraduationsToJsonArray(profile.getGraduations()));
-    response.put("languages", Lenguage.parseLenguagesToJsonArray(profile.getLenguages()));
-    response.put("links", Link.parseLinksToJsonArray(profile.getLinks()));
-    response.put("skills", Skill.parseSkillsToJsonArray(profile.getSkills()));
-    return response;
+  JsonObject response = new JsonObject();
+  response.put("candidate", Candidate.parseCandidateToJsonObject(profile.getCandidate()));
+  response.put("experiences", Experience.parseExperiencesToJsonArray(profile.getExperiences()));
+  response.put("graduations", Graduation.parseGraduationsToJsonArray(profile.getGraduations()));
+  response.put("languages", Lenguage.parseLenguagesToJsonArray(profile.getLenguages()));
+  response.put("links", Link.parseLinksToJsonArray(profile.getLinks()));
+  response.put("skills", Skill.parseSkillsToJsonArray(profile.getSkills()));
+  return response;
 }
 }
