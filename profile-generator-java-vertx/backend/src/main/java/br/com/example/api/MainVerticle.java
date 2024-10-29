@@ -4,6 +4,12 @@ import java.util.Set;
 
 import br.com.example.api.authentication.auth.Authentication;
 import br.com.example.api.controller.CandidateController;
+import br.com.example.api.controller.ExperienceController;
+import br.com.example.api.controller.GraduationController;
+import br.com.example.api.controller.LenguageController;
+import br.com.example.api.controller.LinkController;
+import br.com.example.api.controller.ProfileController;
+import br.com.example.api.controller.SkillController;
 import br.com.example.api.controller.UserController;
 import br.com.example.api.router.RouterImpl;
 import io.vertx.core.AbstractVerticle;
@@ -17,14 +23,20 @@ public class MainVerticle extends AbstractVerticle {
   public void start(Promise<Void> startPromise) throws Exception {
     final var router = new RouterImpl(vertx).getRouter();
     router.route("/api/*")
-      .handler(new Authentication(vertx).authenticate())
       .handler(CorsHandler.create()
-      .addOrigin("http://localhost:3000/*")
-      .allowedHeaders(configureAllowedHeaders())
-      .allowedMethods(configureAllowedMethods()));
+        .addOrigin("http://localhost:3000/*")
+        .allowedHeaders(configureAllowedHeaders())
+        .allowedMethods(configureAllowedMethods()))
+      .handler(new Authentication(vertx).authenticate());
   
     new UserController(router, vertx).init();
     new CandidateController(router, vertx).init();
+    new ExperienceController(router, vertx).init();
+    new GraduationController(router, vertx).init();
+    new LinkController(router, vertx).init();
+    new LenguageController(router, vertx).init();
+    new SkillController(router, vertx).init();
+    new ProfileController(router, vertx).init();
 
     vertx.createHttpServer().requestHandler(router).listen(8080).onComplete(http -> {
       if (http.succeeded()) {

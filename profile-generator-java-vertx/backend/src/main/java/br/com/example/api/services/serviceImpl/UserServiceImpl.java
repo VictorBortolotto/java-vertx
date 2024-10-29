@@ -1,10 +1,10 @@
-package br.com.example.api.service;
+package br.com.example.api.services.serviceImpl;
 
 import br.com.example.api.authentication.auth.Authentication;
 import br.com.example.api.authentication.jwt.Jwt;
 import br.com.example.api.data.DatabaseService;
 import br.com.example.api.model.User;
-import br.com.example.api.repository.UserRepository;
+import br.com.example.api.services.service.UserService;
 import br.com.example.api.web.response.Response;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -15,12 +15,12 @@ import io.vertx.mysqlclient.MySQLClient;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
 
-public class UserService implements UserRepository {
+public class UserServiceImpl implements UserService {
 
   private RoutingContext context;
   private Vertx vertx;
 
-  public UserService(RoutingContext context, Vertx vertx) {
+  public UserServiceImpl(RoutingContext context, Vertx vertx) {
     this.vertx = vertx;
     this.context = context;
   }
