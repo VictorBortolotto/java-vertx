@@ -110,4 +110,25 @@ public class CandidateServiceImpl implements CandidateService{
       new Response(context).send(500, new JsonObject().put("message", "Error to create candidate - " + handleFail.getMessage()));
     });
   }
+
+  @Override
+  public Future<Boolean> findByUserId(long id) {
+    final Promise<Boolean> promise = Promise.promise();
+
+    DatabaseService.startConnection(vertx).preparedQuery("select id from candidate where user_id = ?").execute(Tuple.of(id)).onComplete(handle -> {
+      if (handle.succeeded()) {
+        final var candidateExists = handle.result().size() > 0;
+        new Response(context).send(200, new JsonObject().put("candidateExists", candidateExists));
+        promise.complete(candidateExists);
+      } else {
+        promise.fail("Fail to find candidate");
+      }
+    }).onFailure(handleFail -> {
+      promise.fail(handleFail.getMessage());
+      handleFail.printStackTrace();
+      context.response().setStatusCode(500).send("Error to find user");
+    });
+
+    return promise.future();
+  }
 }

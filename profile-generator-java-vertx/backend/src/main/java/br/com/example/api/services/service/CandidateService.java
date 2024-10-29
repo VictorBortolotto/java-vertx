@@ -5,6 +5,7 @@ import io.vertx.core.Future;
 
 public interface CandidateService {
   Future<Candidate> findById(long id);
+  Future<Boolean> findByUserId(long id);
   void save(Candidate candidate);
   void update(Candidate candidate, long id);
 }
