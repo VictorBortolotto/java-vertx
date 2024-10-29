@@ -1,12 +1,10 @@
-package br.com.example.api.repository;
+package br.com.example.api.services.service;
 
 import br.com.example.api.model.Candidate;
 import io.vertx.core.Future;
 
-public interface CandidateRepository {
-  
+public interface CandidateService {
   Future<Candidate> findById(long id);
   void save(Candidate candidate);
   void update(Candidate candidate, long id);
-
 }

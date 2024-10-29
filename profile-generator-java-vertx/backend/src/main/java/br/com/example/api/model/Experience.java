@@ -1,26 +1,42 @@
 package br.com.example.api.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import br.com.example.api.utils.DateUtils;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 public class Experience {
   
   private long id;
   private String companyName;
   private String description;
-  private Date startDate;
-  private Date endDate;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
   private boolean actualWork;
+  private long profileId;
   
   public Experience() {
   }
 
-  public Experience(long id, String companyName, String description, Date startDate, Date endDate, boolean actualWork) {
+  public Experience(long id, String companyName, String description, LocalDateTime startDate, LocalDateTime endDate, boolean actualWork, long profileId) {
     this.id = id;
     this.companyName = companyName;
     this.description = description;
     this.startDate = startDate;
     this.endDate = endDate;
     this.actualWork = actualWork;
+    this.profileId = profileId;
+  }
+
+  public Experience(String companyName, String description, LocalDateTime startDate, LocalDateTime endDate, boolean actualWork, long profileId) {
+    this.companyName = companyName;
+    this.description = description;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.actualWork = actualWork;
+    this.profileId = profileId;
   }
 
   public long getId() {
@@ -47,19 +63,19 @@ public class Experience {
     this.description = description;
   }
 
-  public Date getStartDate() {
+  public LocalDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDateTime startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDateTime getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
   }
 
@@ -69,6 +85,41 @@ public class Experience {
 
   public void setActualWork(boolean actualWork) {
     this.actualWork = actualWork;
+  }
+
+  public long getProfileId() {
+    return profileId;
+  }
+
+  public void setProfileId(long profileId) {
+    this.profileId = profileId;
+  }
+
+  public static Experience getExperienceFromJsonObject(JsonObject jsonObject) {
+    return new Experience(jsonObject.getString("companyName"), jsonObject.getString("description"), DateUtils.parseStringToLocalDateTime(jsonObject.getString("startDate")), DateUtils.parseStringToLocalDateTime(jsonObject.getString("endDate")), jsonObject.getBoolean("actualWork"), jsonObject.getLong("profileId"));
+  }
+
+  public static JsonObject parseExperienceToJsonObject(Experience experience) {
+    final var jsonObject = new JsonObject();
+    jsonObject.put("companyName", experience.getCompanyName());
+    jsonObject.put("description", experience.getDescription());
+    jsonObject.put("startDate", experience.getStartDate().toString());
+    jsonObject.put("endDate", experience.getEndDate().toString());
+    jsonObject.put("actualWork", experience.isActualWork());
+    jsonObject.put("profileId", experience.getProfileId());
+    jsonObject.put("experienceId", experience.getId());
+
+    return jsonObject;
+  }
+
+  public static JsonArray parseExperiencesToJsonArray(List<Experience> experiences) {
+    final var jsonArray = new JsonArray();
+    for (Experience experience : experiences) {
+      final var jsonObject = parseExperienceToJsonObject(experience);
+      jsonArray.add(jsonObject);
+    }
+
+    return jsonArray;
   }
 
   @Override
@@ -81,6 +132,7 @@ public class Experience {
     result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
     result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
     result = prime * result + (actualWork ? 1231 : 1237);
+    result = prime * result + (int) (profileId ^ (profileId >>> 32));
     return result;
   }
 
@@ -117,13 +169,14 @@ public class Experience {
       return false;
     if (actualWork != other.actualWork)
       return false;
+    if (profileId != other.profileId)
+      return false;
     return true;
   }
 
   @Override
   public String toString() {
     return "Experience [id=" + id + ", companyName=" + companyName + ", description=" + description + ", startDate="
-        + startDate + ", endDate=" + endDate + ", actualWork=" + actualWork + "]";
+        + startDate + ", endDate=" + endDate + ", actualWork=" + actualWork + ", profileId=" + profileId + "]";
   }
-
 }

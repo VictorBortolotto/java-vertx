@@ -83,6 +83,16 @@ public class Candidate {
     return new Candidate(candidate.getString("name"), candidate.getString("address"), candidate.getString("phone"), candidate.getString("description"), candidate.getLong("userId"));
   }
 
+  public static JsonObject parseCandidateToJsonObject(Candidate candidate) {
+    final var jsonObject = new JsonObject();
+    jsonObject.put("name", candidate.getName());
+    jsonObject.put("address", candidate.getAddress());
+    jsonObject.put("phone", candidate.getPhone());
+    jsonObject.put("description", candidate.getDescription());
+
+    return jsonObject;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;

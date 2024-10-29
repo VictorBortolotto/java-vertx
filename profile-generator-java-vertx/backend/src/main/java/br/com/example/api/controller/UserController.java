@@ -1,7 +1,7 @@
 package br.com.example.api.controller;
 
 import br.com.example.api.model.User;
-import br.com.example.api.service.UserService;
+import br.com.example.api.services.serviceImpl.UserServiceImpl;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
@@ -25,7 +25,7 @@ public class UserController {
       handle.request().bodyHandler(bodyHandler -> {
         final var jsonObject = bodyHandler.toJsonObject();
         final var user = User.getUserFromJsonObject(jsonObject);
-        new UserService(handle, vertx).save(user);
+        new UserServiceImpl(handle, vertx).save(user);
       });
     });
   }
@@ -35,7 +35,7 @@ public class UserController {
       handle.request().bodyHandler(bodyHandler -> {
         final var jsonObject = bodyHandler.toJsonObject();
         final var user = User.getUserFromJsonObject(jsonObject);
-        new UserService(handle, vertx).login(user);
+        new UserServiceImpl(handle, vertx).login(user);
       });
     });
   }
