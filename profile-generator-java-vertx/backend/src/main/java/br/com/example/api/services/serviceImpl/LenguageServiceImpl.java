@@ -41,6 +41,8 @@ private RoutingContext context;
           lenguages.add(lenguage);
         } 
         promise.complete(lenguages);
+      } else if (handle.succeeded() && result.size() == 0) {
+        promise.complete(List.of(new Lenguage()));
       } else {
         promise.fail("Fail to find lenguage");
       }

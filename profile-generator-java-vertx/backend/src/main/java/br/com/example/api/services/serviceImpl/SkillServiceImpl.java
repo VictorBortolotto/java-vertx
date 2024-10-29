@@ -41,6 +41,8 @@ public class SkillServiceImpl implements SkillService {
           skills.add(skill);
         } 
         promise.complete(skills);
+      } else if (handle.succeeded() && result.size() == 0) {
+        promise.complete(List.of(new Skill()));
       } else {
         promise.fail("Fail to find skill");
       }

@@ -44,6 +44,8 @@ public class ExperienceServiceImpl implements ExperienceService {
           experiences.add(experience);
         } 
         promise.complete(experiences);
+      } else if (handle.succeeded() && result.size() == 0) {
+        promise.complete(List.of(new Experience()));
       } else {
         promise.fail("Fail to find experience");
       }

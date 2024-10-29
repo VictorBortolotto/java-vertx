@@ -67,6 +67,8 @@ public class GraduationServiceImpl implements GraduationService {
           graduations.add(graduation);
         } 
         promise.complete(graduations);
+      } else if (handle.succeeded() && result.size() == 0) {
+        promise.complete(List.of(new Graduation()));
       } else {
         promise.fail("Fail to find graduation");
       }
