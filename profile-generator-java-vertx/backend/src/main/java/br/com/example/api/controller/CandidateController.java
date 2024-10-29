@@ -17,6 +17,7 @@ public class CandidateController {
   public void init() {
     save();
     update();
+    findByUserId();
   }
 
   private void save() {
@@ -34,6 +35,15 @@ public class CandidateController {
         final var id = Long.valueOf(handle.request().params().get("id"));
         final var candidate = Candidate.getCandidateFromJsonObject(bodyHandler.toJsonObject());
         new CandidateServiceImpl(handle, vertx).update(candidate, id);
+      });
+    });
+  }
+
+  private void findByUserId() {
+    router.get("/api/candidate").handler(handle -> {
+       handle.request().bodyHandler(bodyHandler -> {
+        final var id = Long.valueOf(handle.request().params().get("id"));
+        new CandidateServiceImpl(handle, vertx).findByUserId(id);
       });
     });
   }
